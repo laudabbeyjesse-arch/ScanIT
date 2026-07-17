@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - ScanIT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">📱 ScanIT</div>
+    <div class="slogan">Scan smarter. Know your products instantly.</div>
+  </header>
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contact Section -->
+  <section class="contact">
+    <h2>📬 Get in Touch</h2>
+    <p>We’d love to hear from you! Fill out the form below or reach us directly.</p>
+
+    <div class="contact-card">
+      <form class="contact-form">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Type your message..." required></textarea>
+
+        <button type="submit">📨 Send Message</button>
+      </form>
+    </div>
+
+    <div class="contact-info">
+      <p><strong>Email:</strong> scanit.team@example.com</p>
+      <p><strong>GitHub:</strong> <a href="https://github.com/CodeQuest-Group-86/ScanIt" target="_blank">ScanIT Repository</a></p>
+      <p><strong>University:</strong> KNUST, Computer Science, Level 200</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 ScanIT Team. All rights reserved.</p>
+    <div class="social-icons">
+      <a href="#">🌐</a>
+      <a href="#">🐦</a>
+      <a href="#">📘</a>
+      <a href="#">📸</a>
+    </div>
+  </footer>
+
+  <!-- Firebase + Firestore -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } 
+      from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCi-Fb3VVwKri-rJWfGu3nEsrOG2VR8ncI",
+      authDomain: "scanit-c0e54.firebaseapp.com",
+      projectId: "scanit-c0e54",
+      storageBucket: "scanit-c0e54.firebasestorage.app",
+      messagingSenderId: "378715760777",
+      appId: "1:378715760777:web:346d3998e4f379b9763e58",
+      measurementId: "G-GY03JV4CP1"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // Handle Contact Form Submission
+    const form = document.querySelector(".contact-form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = e.target.name.value;
+      const email = e.target.email.value;
+      const message = e.target.message.value;
+
+      try {
+        await addDoc(collection(db, "messages"), {
+          name,
+          email,
+          message,
+          timestamp: serverTimestamp()
+        });
+
+        alert("✅ Message sent and stored successfully!");
+        form.reset();
+      } catch (error) {
+        console.error("Error saving message: ", error);
+        alert("❌ Something went wrong. Try again later.");
+      }
+    });
+  </script>
+</body>
+</html>
